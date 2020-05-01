@@ -56,16 +56,16 @@ export default {
     return {
       argeeRules: [{ validate: (val) => !!val, message: '必须同意用户协议' }],
       validateForm: {
-        username: '',
-        password: '',
+        username: 'yhChen',
+        password: '123456',
         isAgree: false
       },
-      menuList: [],
       verifyCode: '',
-      vailiable: true,
+      menuList: [],
       show: false,
       roles: [],
 
+      vailiable: true,
       labelPosition: 'right'
     }
   },
@@ -74,7 +74,6 @@ export default {
     this.axios
       .get(this.GLOBAL.baseUrl + '/captcha?name=' + this.validateForm.username, { responseType: 'blob' })
       .then((res) => {
-        console.log(res.headers)
         let img = this.$refs.codeImg
         let url = window.URL.createObjectURL(res.data)
         img.src = url
@@ -86,6 +85,7 @@ export default {
       //表单验证通过
       this.$refs.form.validate().then((result) => {
         console.log('form valid: ', result)
+        //表单验证通过后才显示验证码
         this.axios({
           method: 'post',
           url: this.GLOBAL.baseUrl + '/sysAdmin/login',
@@ -95,6 +95,7 @@ export default {
             verifyCode: this.verifyCode
           }
         }).then((res) => {
+          //登录成功
           if (res.data.code === 1) {
             //存token
             localStorage.setItem('token', res.data.data.token)
@@ -118,13 +119,9 @@ export default {
             } else {
               //只有一个角色
               const roleId = res.data.data.admin.roles[0].roleId
-              alert(roleId)
-              this.$router.push({
-                path: '/',
-                query: {
-                  roleId: roleId
-                }
-              })
+              //将roleId存入全局
+              localStorage.setItem('roleId', roleId)
+              this.$router.push('/')
             }
           } else {
             //登录失败
@@ -155,14 +152,9 @@ export default {
       }
     },
     gotoIndex(roleId) {
-      //带着用户选择的roleId跳到首页
-      alert(roleId)
-      this.$router.push({
-        path: '/',
-        query: {
-          roleId: roleId
-        }
-      })
+      //将roleId存入全局
+      localStorage.setItem('roleId', roleId)
+      this.$router.push('/')
     }
   },
   computed: {}
