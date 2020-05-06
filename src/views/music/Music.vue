@@ -7,7 +7,16 @@
         @blur.prevent="shows"
         style="margin:0 0px 0 20px"
       ></mu-text-field>
-      <mu-button color="primary" @click="search()">点击搜索</mu-button>
+      <v-btn
+        v-for="(item, index) in menus"
+        :key="index"
+        :color="item.icon"
+        class="mr-3"
+        @click="handleClick(item.title)"
+        large
+      >
+        {{ item.title }}
+      </v-btn>
       <p style="margin:0 0px 0 20px">热门标签:</p>
       <mu-chip
         class="demo-chip"
@@ -50,15 +59,15 @@
 
 <script>
 const initChips = [
-  { id: 1, name: '薛之谦', type: 'secondary' },
-  { id: 2, name: '邓紫棋', type: 'success' },
-  { id: 3, name: '周深', type: 'info' },
-  { id: 4, name: '林俊杰', type: 'warning' },
-  { id: 5, name: '周杰伦', type: 'error' },
-  { id: 6, name: '李荣浩', type: 'primary' }
+  { id: 10, name: '薛之谦', type: 'secondary' },
+  { id: 11, name: '邓紫棋', type: 'success' },
+  { id: 12, name: '周深', type: 'info' },
+  { id: 13, name: '林俊杰', type: 'warning' },
+  { id: 14, name: '周杰伦', type: 'error' },
+  { id: 15, name: '李荣浩', type: 'primary' }
 ]
 export default {
-  name: 'Music',
+  name: 'music',
   data() {
     return {
       chips: [...initChips],
@@ -83,6 +92,9 @@ export default {
       active: 0,
       keywords: '',
       show: true,
+      menuList: this.$store.state.menuList,
+      items: [],
+      menus: [],
       id: ''
     }
   },
@@ -90,6 +102,21 @@ export default {
   created() {
     this.getSong()
     this.currentPage
+    console.log(this.$options.name)
+    this.$store.commit('setMenuList', JSON.parse(localStorage.getItem('menuList')))
+    this.menuList = this.$store.state.menuList
+    for (let i = 0; i < this.menuList.length; i++) {
+      let parent = this.menuList[i]
+      if (parent.subMenus.length !== undefined) {
+        for (let j = 0; j < parent.subMenus.length; j++) {
+          let child = this.menuList[i]
+          if (child.subMenus[j].path === this.$options.name) {
+            this.menus = child.subMenus[j].subMenus
+            console.log(JSON.stringify(this.menus))
+          }
+        }
+      }
+    }
     // console.log('token的值' + this.token)
   },
   mounted() {},
@@ -102,6 +129,54 @@ export default {
     }
   },
   methods: {
+    handleClick(title) {
+      if (title === '新增') {
+        this.add()
+      }
+      if (title === '搜索') {
+        this.search()
+      }
+      if (title === '导入') {
+        this.import()
+      }
+      if (title === '导出') {
+        this.export()
+      }
+    },
+    add() {
+      alert('新增歌曲')
+    },
+    search() {
+      //模糊查询歌单
+      alert('搜索歌曲')
+      // let roleId = localStorage.getItem('roleId')
+      // console.log(roleId)
+      this.axios({
+        method: 'get',
+        url: this.GLOBAL.baseUrl + '/song/blur?',
+        // 问号带参，表单提交
+        params: {
+          field: this.keywords
+        },
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then((res) => {
+        this.song = res.data.data
+        this.show = false
+      })
+    },
+    export() {
+      alert('导出歌曲')
+      this.axios.get(this.GLOBAL.baseUrl + '/song/export').then((res) => {
+        if (res.data.code === 1) {
+          alert('导出成功')
+        }
+      })
+    },
+    import() {
+      alert('导入歌曲')
+    },
     //获取歌曲
     getSong() {
       // let roleId = localStorage.getItem('roleId')
@@ -125,25 +200,6 @@ export default {
     chipsSearch(name) {
       this.keywords = name
       this.search()
-    },
-    //模糊查询歌单
-    search() {
-      // let roleId = localStorage.getItem('roleId')
-      // console.log(roleId)
-      this.axios({
-        method: 'get',
-        url: this.GLOBAL.baseUrl + '/song/blur?',
-        // 问号带参，表单提交
-        params: {
-          field: this.keywords
-        },
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then((res) => {
-        this.song = res.data.data
-        this.show = false
-      })
     },
     shows() {
       if (this.keywords === '') this.show = true

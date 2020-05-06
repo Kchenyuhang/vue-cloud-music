@@ -59,7 +59,7 @@
 
 <script>
 export default {
-  name: 'MusicList',
+  name: 'music-list',
   data() {
     return {
       menuList: this.$store.state.menuList,
@@ -73,6 +73,7 @@ export default {
     // alert(this.$options.name)
     this.$store.commit('setMenuList', JSON.parse(localStorage.getItem('menuList')))
     this.menuList = this.$store.state.menuList
+    console.log(this.menuList)
     for (let i = 0; i < this.menuList.length; i++) {
       let parent = this.menuList[i]
       if (parent.subMenus !== undefined) {
@@ -84,7 +85,8 @@ export default {
         }
       }
     }
-    this.axios.get(this.GLOBAL.baseUrl + '/songList/all').then((res) => {
+    console.log(this.menus)
+    this.axios.get('/songList/all').then((res) => {
       this.items = res.data.data
     })
   },
