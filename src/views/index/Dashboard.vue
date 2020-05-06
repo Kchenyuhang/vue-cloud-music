@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row>
+    <v-row style="height: 100%">
       <v-col v-for="(item, i) in items" :key="i" cols="6">
         <v-card :color="item.color" dark>
           <div class="d-flex flex-no-wrap justify-space-between">
@@ -17,36 +17,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <!-- <v-row>
-      <v-col cols="12">
-        <v-card color="#385F73" dark>
-          <v-card-title class="headline">Unlimited music now</v-card-title>
-
-          <v-card-subtitle
-            >Listen to your favorite artists and albums whenever and wherever, online and offline.</v-card-subtitle
-          >
-
-          <v-card-actions>
-            <v-btn text>Listen Now</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
-        <v-card color="#385F73" dark>
-          <v-card-title class="headline">Unlimited music now</v-card-title>
-
-          <v-card-subtitle
-            >Listen to your favorite artists and albums whenever and wherever, online and offline.</v-card-subtitle
-          >
-
-          <v-card-actions>
-            <v-btn text>Listen Now</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row> -->
     <div class="day">
       <el-calendar v-model="value"> </el-calendar>
     </div>
@@ -79,7 +49,7 @@ export default {
 
 <style scoped lang="scss">
 .day {
-  width: 843px;
-  height: 180px;
+  width: 100%;
+  height: 100%;
 }
 </style>

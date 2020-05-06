@@ -100,15 +100,18 @@ export default {
             //存token
             localStorage.setItem('token', res.data.data.token)
             this.$store.commit('setToken', res.data.data.token)
-            let admin = {
-              id: res.data.data.admin.id,
-              name: res.data.data.admin.name,
-              roles: res.data.data.admin.roles,
-              avatar: res.data.data.admin.avatar
-            }
+            // let admin = {
+            //   id: res.data.data.admin.id,
+            //   name: res.data.data.admin.name,
+            //   roles: res.data.data.admin.roles,
+            //   avatar: res.data.data.admin.avatar
+            // }
             //存admin
-            localStorage.setItem('admin', JSON.stringify(admin))
-            this.$store.commit('setAdmin', JSON.stringify(admin))
+            localStorage.setItem('id', res.data.data.admin.id)
+            localStorage.setItem('name', res.data.data.admin.name)
+            localStorage.setItem('avatar', res.data.data.admin.avatar)
+            this.$store.commit('setName', res.data.data.admin.name)
+            this.$store.commit('setAvatar', res.data.data.admin.avatar)
             this.roles = res.data.data.admin.roles
             //角色数量超过1个
             if (this.roles.length > 1) {

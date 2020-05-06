@@ -63,6 +63,7 @@ export default {
   data() {
     return {
       menuList: this.$store.state.menuList,
+      admin: this.$store.state.admin,
       menus: [],
       items: [],
       keywords: ''
@@ -70,12 +71,16 @@ export default {
   },
   created() {
     // alert(this.$options.name)
+    this.$store.commit('setMenuList', JSON.parse(localStorage.getItem('menuList')))
+    this.menuList = this.$store.state.menuList
     for (let i = 0; i < this.menuList.length; i++) {
       let parent = this.menuList[i]
-      for (let j = 0; j < parent.subMenus.length; j++) {
-        let child = this.menuList[i]
-        if (child.subMenus[j].path === this.$options.name) {
-          this.menus = child.subMenus[j].subMenus
+      if (parent.subMenus !== undefined) {
+        for (let j = 0; j < parent.subMenus.length; j++) {
+          let child = this.menuList[i]
+          if (child.subMenus[j].path === this.$options.name) {
+            this.menus = child.subMenus[j].subMenus
+          }
         }
       }
     }

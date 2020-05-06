@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import store from '../store/index.js'
 //vuetify提供的定位功能，回到上一个路由的时候可以定位到之前的位置
 import goTo from 'vuetify/es5/services/goto'
 import Layout from '../views/index/Layout.vue'
