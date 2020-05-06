@@ -26,6 +26,9 @@
           <mu-form-item style="margin-left: 17%">
             <mu-button color="primary" @click="submit">提交</mu-button>
             <mu-button @click="clear">重置</mu-button>
+            <v-btn color="purple" dark @click="gitHub">
+              GitHub
+            </v-btn>
           </mu-form-item>
         </el-form>
       </mu-form>
@@ -158,6 +161,12 @@ export default {
       //将roleId存入全局
       localStorage.setItem('roleId', roleId)
       this.$router.push('/')
+    },
+    gitHub() {
+      const authorize_uri = 'https://github.com/login/oauth/authorize'
+      const client_id = '930f71fdbece9a36b028'
+      const redirect_uri = 'http://localhost:8080/login/oauth2/code/github'
+      window.location.href = `${authorize_uri}?client_id=${client_id}&redirect_uri=${redirect_uri}`
     }
   },
   computed: {}
