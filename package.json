@@ -16,7 +16,7 @@
   "dependencies": {
     "ali-oss": "^6.7.0",
     "animate.css": "^3.7.2",
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "v-dialogs": "^2.1.4",
     "vue": "^2.6.11",
